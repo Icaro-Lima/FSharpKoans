@@ -60,6 +60,25 @@ module ``about the stock example`` =
 
     [<Koan>]
     let YouGotTheAnswerCorrect() =
-        let result =  __
+        let splitCommas (x:string) =
+            x.Split([|','|])
+
+        let rec findMaxDiffOpenClose list maxValue maxDate  =
+            match list with
+            | [] -> maxDate
+            | head :: tail ->
+                let line = splitCommas head
+
+                let op = line.[1] |> float
+                let cl = line.[4] |> float
+
+                let diff = abs (op - cl)
+
+                if diff > maxValue then
+                    findMaxDiffOpenClose tail diff line.[0]
+                else
+                    findMaxDiffOpenClose tail maxValue maxDate
+
+        let result = findMaxDiffOpenClose stockData.Tail -1.0 ""
         
         AssertEquality "2012-03-13" result
